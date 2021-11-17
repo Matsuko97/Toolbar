@@ -67,7 +67,7 @@ HWND CreateToolbar(HWND hParentWnd)
 	SendMessage(hWndTB,TB_SETIMAGELIST,0,(LPARAM)hImageList); //正常显示时的图像列表
 
 	hHotImageList = ImageList_Create(24,24,ILC_COLOR24|ILC_MASK,3,1);
-	hBitmap = (HBITMAP)LoadImage(NULL, TEXT("hot.bmp"), IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE|LR_CREATEDIBSECTION);
+	hBitmap = (HBITMAP)LoadImage(NULL, TEXT("start.bmp"), IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE|LR_CREATEDIBSECTION);
 	ImageList_AddMasked(hHotImageList,hBitmap, RGB(255,255,255));
 	DeleteObject (hBitmap);
 	SendMessage(hWndTB,TB_SETHOTIMAGELIST,0,(LPARAM)hHotImageList); //鼠标悬浮时的图像列表
