@@ -62,19 +62,20 @@ HWND CreateToolbar(HWND hParentWnd)
 	hImageList = ImageList_Create(24,24,ILC_COLOR24|ILC_MASK,3,1);
 
 	hBitmap = (HBITMAP)LoadImage(NULL, TEXT("start.bmp"), IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE|LR_CREATEDIBSECTION); //加载一组图片
-	ImageList_AddMasked(hImageList, hBitmap, RGB(255,255,255));
+	ImageList_AddMasked(hImageList, hBitmap, RGB(255,0,0));
+	//mask的颜色RGB需要跟背景一样才能使背景透明
 	DeleteObject (hBitmap);
 	SendMessage(hWndTB,TB_SETIMAGELIST,0,(LPARAM)hImageList); //正常显示时的图像列表
 
 	hHotImageList = ImageList_Create(24,24,ILC_COLOR24|ILC_MASK,3,1);
 	hBitmap = (HBITMAP)LoadImage(NULL, TEXT("hot.bmp"), IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE|LR_CREATEDIBSECTION);
-	ImageList_AddMasked(hHotImageList,hBitmap, RGB(255,255,255));
+	ImageList_AddMasked(hHotImageList,hBitmap, RGB(0,255,0));
 	DeleteObject (hBitmap);
 	SendMessage(hWndTB,TB_SETHOTIMAGELIST,0,(LPARAM)hHotImageList); //鼠标悬浮时的图像列表
 
 	hDisableImageList = ImageList_Create(24,24,ILC_COLOR24|ILC_MASK,3,1);
 	hBitmap = (HBITMAP)LoadImage(NULL, TEXT("disable.bmp"), IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE|LR_CREATEDIBSECTION);
-	ImageList_AddMasked(hDisableImageList,hBitmap, RGB(255,255,255));
+	ImageList_AddMasked(hDisableImageList,hBitmap, RGB(0,0,255));
 	DeleteObject (hBitmap);
 	SendMessage(hWndTB,TB_SETDISABLEDIMAGELIST,0,(LPARAM)hDisableImageList); //当工具栏button失能时的图像列表
 
@@ -95,7 +96,9 @@ HWND CreateToolbar(HWND hParentWnd)
 	tbb[2].idCommand = ID_FSAVE;
 	tbb[2].iString = (INT_PTR)TEXT("保存");
 	SendMessage(hWndTB, TB_ADDBUTTONS, sizeof(tbb)/sizeof(TBBUTTON), (LPARAM)&tbb); //配置工具栏按钮信息
-	SendMessage(hWndTB,WM_SIZE,0,0);
+	//SendMessage(hWndTB,WM_SIZE,0,0);
+	SendMessage(hWndTB, TB_AUTOSIZE, 0, 0); 
+	ShowWindow(hWndTB,  TRUE);
 
 	return hWndTB;
 }
@@ -104,6 +107,7 @@ HWND CreateStatusBar(HWND hParentWnd)
 {
 #define PANEL_NUM 3
 	int array[PANEL_NUM]={120,120*2,-1};
+
 	HINSTANCE hInst = GetModuleHandle(NULL);
 	//创建Statusbar控件
 	HWND hWndStatus = CreateWindowEx(0, STATUSCLASSNAME, TEXT(""), WS_CHILD|WS_BORDER|WS_VISIBLE, 0, 0, 0, 0, hParentWnd, (HMENU)IDC_STATUSBAR, hInst, NULL);
